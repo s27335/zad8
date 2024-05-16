@@ -127,13 +127,16 @@ public static partial class Tasks
     /// </summary>
     public static IEnumerable<object> Task10()
     {
+        var empty = new List<object>() { "Brak wartości", null, null };
+        
         return Emps
             .Select(x => new
             {
                 x.Ename,
                 x.Job,
                 x.HireDate
-            });
+            })
+            .Union(empty);
     }
 
     /// <summary>
