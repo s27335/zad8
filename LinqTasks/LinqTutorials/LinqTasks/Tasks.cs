@@ -179,7 +179,10 @@ public static partial class Tasks
     /// </summary>
     public static int Task13(int[] arr)
     {
-        return -1;
+        return arr
+            .GroupBy(x=> x)
+            .Single(x => x.Count() % 2 != 0)
+            .Key;
     }
 
     /// <summary>
@@ -188,6 +191,9 @@ public static partial class Tasks
     /// </summary>
     public static IEnumerable<Dept> Task14()
     {
-        return null;
+       return Depts
+            .GroupJoin(Emps, dept => dept.Deptno, emp => emp.Deptno, (dept, emp) => new {Departament = dept, NumOfWorkers = emp.Count() })
+            .Where(x => x.NumOfWorkers == 5 || x.NumOfWorkers == 0)
+            .Select(x => x.Departament);
     }
 }
