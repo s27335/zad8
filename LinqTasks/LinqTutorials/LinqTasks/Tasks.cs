@@ -127,16 +127,14 @@ public static partial class Tasks
     /// </summary>
     public static IEnumerable<object> Task10()
     {
-        var empty = new List<object>() { "Brak wartości", null, null };
-        
         return Emps
-            .Select(x => new
+            .Select(x => new { x.Ename, x.Job, x.HireDate })
+            .Union(Emps.Select(x => new
             {
-                x.Ename,
-                x.Job,
-                x.HireDate
-            })
-            .Union(empty);
+                Ename = "Brak wartości",
+                Job = (string)null,
+                HireDate = (DateTime?)null
+            }));
     }
 
     /// <summary>
@@ -152,7 +150,11 @@ public static partial class Tasks
     /// </summary>
     public static IEnumerable<object> Task11()
     {
-        return null;
+        return Emps
+            .Join(Depts, emp => emp.Deptno, dept => dept.Deptno, (emp, dept) => new { dept.Dname, emp.Empno })
+            .GroupBy(d => d.Dname)
+            .Select(x => new { name = x.Key, numOfEmployees = x.Count() })
+            .Where(x => x.numOfEmployees > 1);
     }
 
     /// <summary>
